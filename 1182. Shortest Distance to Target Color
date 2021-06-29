@@ -1,0 +1,43 @@
+class Solution {
+ public:
+  vector<int> shortestDistanceColor(vector<int>& colors,
+                                    vector<vector<int>>& queries) {
+    int n = colors.size();
+    int rightMost[3] = {0, 0, 0};
+    int leftMost[3] = {n - 1, n - 1, n - 1};
+
+    int distance[3][n];
+
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < n; j++) {
+        distance[i][j] = -1;
+      }
+    }
+    // look forward
+    for (int i = 0; i < n; i++) {
+      int color = colors[i] - 1;
+      for (int j = rightMost[color]; j < i + 1; j++) {
+        distance[color][j] = i - j;
+      }
+      rightMost[color] = i + 1;
+    }
+
+    // look backward
+    for (int i = n - 1; i > -1; i--) {
+      int color = colors[i] - 1;
+      for (int j = leftMost[color]; j > i - 1; j--) {
+        if (distance[color][j] == -1 || distance[color][j] > j - i) {
+          distance[color][j] = j - i;
+        }
+      }
+      leftMost[color] = i - 1;
+    }
+    vector<int> result;
+    for (auto query : queries) {
+      int index = query[0];
+      int color = query[1] - 1;
+      result.push_back(distance[color][index]);
+    }
+    return result;
+  }
+};
