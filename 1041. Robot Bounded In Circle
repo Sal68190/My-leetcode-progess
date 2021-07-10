@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool isRobotBounded(string s) {
+        int x=0,y=0,i=0;
+        // x and y are the co-ordinates and i=0 is the current direction which is North.
+        vector<vector<int>> dir={{0,1},{1,0},{0,-1},{-1,0}}; // N,E,S,W
+        // dir vector is a 2d vector which stoes all directions Cordinates 
+        
+        int n=s.length();
+        for(int j=0;j<n;j++) {
+            switch(s[j]) {
+                case 'G':  // Go 1 unit forward
+                    x+=dir[i][0]; // pick the x part in whichever direction our robot is ponting
+                    y+=dir[i][1]; // pick the y part in whichever direction our robot is ponting
+                    break;
+                case 'L': // If we have to turn left
+                    i=(i+3)%4; //left is West, which is 3 units in clockwise direction, so just turn left from your current facing position which is my current i value and we did %4 because we are moving in those direction given in the input array infinitely, so %4 basically gives you the correct index between 0 and last index.
+                    break;
+                case 'R':
+                    i=(i+1)%4; //Right is east, which is 1 units in clockwise direction, so just turn right from your current facing position which is my current i value
+                    break;
+            }
+        }
+        
+        if((x==0 && y==0) || i != 0) return true; // either we returned to origin OR we are not facing North, which was 0
+        return false;
+    }
+};
