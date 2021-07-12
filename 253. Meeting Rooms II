@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int minMeetingRooms(vector<vector<int>>& intervals) {
+        map<int, int> meetings;
+        for (const auto& interval : intervals) {
+            meetings[interval[0]] += 1;
+            meetings[interval[1]] += -1;
+        }
+        int min_rooms = 0, curr = 0;
+        for (auto [key, value] : meetings) {
+            curr += value;
+            min_rooms = max(min_rooms, curr);
+        }
+        return min_rooms;
+    }
+};
