@@ -1,0 +1,36 @@
+class Logger {
+public:
+
+    std::unordered_map<std::string, int> hash;
+    
+    Logger() {}
+    
+ 
+    bool shouldPrintMessage(int timestamp, string message) {
+        if (hash.find(message)==hash.end())
+        {
+            hash[message]=timestamp+10;
+            return true;
+        }
+        else if (timestamp>=hash[message])
+        {
+            hash[message]=timestamp+10;
+            return true;
+        }
+        else return false;
+    }
+    
+};
+
+Data structure used : hashmap
+The idea is to create a hashmap with message as key and its timestamp as the value.
+
+Algorithm explained
+If the new string already exists in the map then
+Check if previous timestamp - current timestamp less than 10
+If true then return false because we cannot print this word.
+If false then update the timestamp and return true
+
+
+If the string does not exist in map then insert the string and its timestamp to the map
+return true because the string can be printed.
