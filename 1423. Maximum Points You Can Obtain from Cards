@@ -1,33 +1,22 @@
 class Solution {
 public:
-    int maxScore(vector<int> &cardPoints, int k) {
-        int startingIndex = 0;
-        int presentSubarrayScore = 0;
-        int n = cardPoints.size();
-        int requiredSubarrayLength = n - k;
-        int minSubarrayScore;
-        int totalScore = 0;
-
-        // Total score obtained on selecting all the cards.
-        for (int i : cardPoints) {
-            totalScore += i;
+    int maxScore(vector<int>& cardPoints, int k) {
+        int n = cardPoints.size(), left = 0, right = n - k, temp_sum = 0, total = 0;
+        
+        total = accumulate(cardPoints.begin(), cardPoints.end(), total);
+        
+        for (int i = left; i < right; i++)
+            temp_sum += cardPoints[i];
+        
+        int res = total - temp_sum;
+        
+        while(right < n) {
+            temp_sum -= cardPoints[left++];
+            temp_sum += cardPoints[right++];
+            
+            res = max(total - temp_sum, res);
         }
         
-        minSubarrayScore = totalScore;
-
-        if (k == n) {
-            return totalScore;
-        }
-
-        for (int i = 0; i < n; i++) {
-            presentSubarrayScore += cardPoints[i];
-            int presentSubarrayLength = i - startingIndex + 1;
-            // If a valid subarray (having size cardsPoints.size() - k) is possible.
-            if (presentSubarrayLength == requiredSubarrayLength) {
-                minSubarrayScore = min(minSubarrayScore, presentSubarrayScore);
-                presentSubarrayScore -= cardPoints[startingIndex++];
-            }
-        }
-        return totalScore - minSubarrayScore;
-    }
+        return res;
+    }  
 };
