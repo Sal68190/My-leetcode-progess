@@ -1,0 +1,30 @@
+class Solution {
+public:
+    // O(n) time | O(1) space
+    int romanToInt(string s) {
+        // Dictionary of roman numeral to integer
+        unordered_map<char, int> romans {{'I' , 1},
+                                         {'V' , 5},
+                                         {'X' , 10},
+                                         {'L' , 50},
+                                         {'C' , 100},
+                                         {'D' , 500},
+                                         {'M' , 1000}};
+        int sum = 0;      
+        
+        // Loop through each roman numeral
+        for (int i = 0; i < s.length() - 1; i++) {
+            // If the current numeral is < numeral ahead
+            // subtract current numeral from sum
+            if (romans[s[i]] < romans[s[i + 1]])
+                sum -= romans[s[i]];
+            // Else, add the numeral
+            else
+                sum += romans[s[i]];
+        }
+        // Add the last numeral into sum
+        sum += romans[s[s.length() - 1]];
+        
+        return sum;
+    }
+};
