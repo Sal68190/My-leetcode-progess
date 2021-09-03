@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>> gramy;
+        if(strs.size()==0)
+            return gramy;
+        unordered_map<string, vector<string>> map;
+        for(string s: strs){
+            string key = s;
+          std::sort(key.begin(), key.end());
+            map[key].push_back(s);
+        }
+        
+        for(auto p: map){
+           gramy.push_back(p.second);
+        }
+        return gramy;
+    }
+};
