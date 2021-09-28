@@ -1,16 +1,15 @@
 class Solution {
 public:
     int minMeetingRooms(vector<vector<int>>& intervals) {
-        map<int, int> meetings;
-        for (const auto& interval : intervals) {
-            meetings[interval[0]] += 1;
-            meetings[interval[1]] += -1;
+        int rooms = 0;
+        sort(intervals.begin(), intervals.end());
+        priority_queue<int, vector<int>, greater<int>> pq;
+        for(auto inter: intervals) {
+            int st = inter[0], en = inter[1];
+            while(!pq.empty() && pq.top() <=st) pq.pop();
+            pq.push(en);
+            rooms = max(rooms, (int)pq.size());
         }
-        int min_rooms = 0, curr = 0;
-        for (auto [key, value] : meetings) {
-            curr += value;
-            min_rooms = max(min_rooms, curr);
-        }
-        return min_rooms;
+        return rooms;
     }
 };
